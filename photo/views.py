@@ -1,7 +1,10 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from photo.models import Photo
 
 def index(request):
-    return HttpResponse("Hello world!")
+    return render(request, 'photo/index.html', {
+        'photo_list' : Photo.objects.all(),
+    })
 

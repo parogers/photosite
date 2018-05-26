@@ -124,5 +124,5 @@ STATIC_URL = 'http://localhost/content/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'content', 'static')
 
-MEDIA_URL = '/content/media/'
+MEDIA_URL = 'http://localhost/content/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'content', 'media')
