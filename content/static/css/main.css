@@ -1,0 +1,29 @@
+.photo {
+    width: 100px;
+    margin: 10px;
+}
+
+.jumbotron {
+    text-align: center;
+}
+
+.jumbotron h1 {
+    font-weight: bold;
+}
+
+.jumbotron p {
+    font-style: italic;
+}
+
+.button {
+    border-radius: 0.75em;
+    padding: 0.5em;
+    background: lightblue;
+    color: black;
+    margin-bottom: 1em;
+    border: none;
+}
+
+.menu {
+    text-align: center;
+}

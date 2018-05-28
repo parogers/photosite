@@ -1,24 +1,29 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Photos for looking at</title>
-    <link rel="stylesheet" href="{% static "css/main.css" %}" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-  </head>
+{% extends "photosite/base.html" %}
 
-  <body>
-    <div class="jumbotron">
-      <h1>My Archive</h1>
-      <p>(photos for looking at)</p>
-    </div>
-    
-    <div class="container">
-      {% for photo in photo_list %}
-      <img class="photo img-thumbnail" src='{{ photo.image.url }}'>
-      {% endfor %}
-    </div>
-  </body>
+{% block "body" %}
+<!-- {% if user.is_authenticated %}
+<div class="container menu">
+  <button data-toggle="collapse" data-target="#messagebox" class="button">
+    Welcome, {{ user }}!
+  </button>
+  
+  <div id="messagebox" class="collapse">
+    This is some kind of profile information.
+  </div>
+</div>
+{% endif %} -->
 
-</html>
+{% if user.is_authenticated %}
+<div class="menu">
+  <button data-toggle="collapse" data-target="#messagebox" class="button">
+    Upload photo
+  </button>
+</div>
+{% endif %}
+
+<div class="container">
+  {% for photo in photo_list %}
+  <img class="photo img-thumbnail" src='{{ photo.image.url }}'>
+  {% endfor %}
+</div>
+{% endblock %}
