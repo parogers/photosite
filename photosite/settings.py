@@ -57,7 +57,7 @@ ROOT_URLCONF = 'photosite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'photosite', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,9 +88,9 @@ DATABASES = {
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
+    #{
+        #'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    #},
     #{
     #    'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     #},
@@ -124,5 +124,8 @@ STATIC_URL = 'http://localhost/content/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'content', 'static')
 
-MEDIA_URL = '/content/media/'
+MEDIA_URL = 'http://localhost/content/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'content', 'media')
+
+LOGIN_URL = '/admin/'
+

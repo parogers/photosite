@@ -1,0 +1,29 @@
+{% extends "photosite/base.html" %}
+
+{% block "body" %}
+<!-- {% if user.is_authenticated %}
+<div class="container menu">
+  <button data-toggle="collapse" data-target="#messagebox" class="button">
+    Welcome, {{ user }}!
+  </button>
+  
+  <div id="messagebox" class="collapse">
+    This is some kind of profile information.
+  </div>
+</div>
+{% endif %} -->
+
+{% if user.is_authenticated %}
+<div class="menu">
+  <button data-toggle="collapse" data-target="#messagebox" class="button">
+    Upload photo
+  </button>
+</div>
+{% endif %}
+
+<div class="container">
+  {% for photo in photo_list %}
+  <img class="photo img-thumbnail" src='{{ photo.image.url }}'>
+  {% endfor %}
+</div>
+{% endblock %}

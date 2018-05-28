@@ -1,0 +1,6 @@
+.photobox {
+    border: solid 1px;
+}
+
+.photo {
+}
