@@ -21,6 +21,20 @@ def fill_colour(img, colour):
     draw = PIL.ImageDraw.Draw(img)
     draw.rectangle((0, 0, img.width-1, img.height-1), colour)
 
+def draw_triangle(img, colour):
+    draw = PIL.ImageDraw.Draw(img)
+
+    all_points = [
+        (0, 0),
+        (0, img.height),
+        (img.width, 0),
+        (img.width, img.height)]
+
+    random.shuffle(all_points)
+    points = all_points[0:3]
+    
+    draw.polygon(points, fill=colour)
+
 def draw_checkers(img, colour):
     draw = PIL.ImageDraw.Draw(img)
     cols = rows = random.randint(5, 10)
@@ -37,7 +51,6 @@ def draw_checkers(img, colour):
                     int(x + w),
                     int(y + h)), colour)
 
-
 colour = (
     random.randint(0, 255),
     random.randint(0, 255),
@@ -49,6 +62,10 @@ colour2 = (
     255-colour[0],
     255-colour[1],
     255-colour[2])
-draw_checkers(img, colour2)
+if random.random() < 0.5:
+    draw_checkers(img, colour2)
+
+if random.random() < 0.5:
+    draw_triangle(img, colour2)
 
 img.save(dest)
