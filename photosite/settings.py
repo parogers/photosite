@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'photo',
 ]
 
@@ -127,5 +128,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'content', 'static')
 MEDIA_URL = 'http://localhost/content/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'content', 'media')
 
-LOGIN_URL = '/admin/'
+LOGIN_URL = '/accounts/login/'
 

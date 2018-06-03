@@ -3,6 +3,9 @@
 {% block "body" %}
 
 <div class="container">
+
+  <p>Upload some photo</p>
+  
   <form action="/upload" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
