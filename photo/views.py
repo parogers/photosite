@@ -1,9 +1,15 @@
 
+from django.views.generic import ListView
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from photo.models import Photo
 from photo.forms import PhotoForm
+
+class PhotoList(ListView):
+    model = Photo
+    template_name = 'photo/index.html'
+    context_object_name = 'photo_list'
 
 def index(request):
     return render(request, 'photo/index.html', {
