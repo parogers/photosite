@@ -8,5 +8,7 @@ class Photo(models.Model):
         width_field='image_width',
         height_field='image_height')
 
+    comment = models.CharField(default="", max_length=100)
+
     image_width = models.IntegerField()
     image_height = models.IntegerField()

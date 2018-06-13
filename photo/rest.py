@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = ('image', 'image_width', 'image_height')
+        fields = ('image', 'comment', 'image_width', 'image_height')
         read_only_fields = ('image_width', 'image_height')
 
 class PhotoViewSet(viewsets.ModelViewSet):
@@ -21,4 +21,3 @@ class PhotoViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def something(self, request):
         return Response('hello world')
-
