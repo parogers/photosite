@@ -27,3 +27,8 @@
 .menu {
     text-align: center;
 }
+
+#upload-div form {
+    display: none;
+}
+

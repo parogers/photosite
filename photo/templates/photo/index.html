@@ -1,4 +1,9 @@
 {% extends "photosite/base.html" %}
+{% load static %}
+
+{% block "scripts" %}
+<script src="{% static "js/uploading.js" %}"></script>
+{% endblock %}
 
 {% block "body" %}
 <!-- {% if user.is_authenticated %}
@@ -14,10 +19,17 @@
 {% endif %} -->
 
 {% if user.is_authenticated %}
-<div class="menu">
-  <button data-toggle="collapse" data-target="#messagebox" class="button">
+<div id="upload-div" class="menu">
+  <button data-toggle="collapse" data-target="#messagebox" class="button" onclick="upload_photo()">
     Upload photo
   </button>
+
+  <form id="upload_form" action="/upload" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="image" id="image_id" />
+    <input type="submit" value="Upload" id="submit_button" />
+  </form>
+  
 </div>
 {% endif %}
 
