@@ -21,8 +21,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
+
 from photo.models import Photo
 from photo.forms import PhotoForm
+from . import pil_helper
 
 PREVIEW_WIDTH = 100
 PREVIEW_HEIGHT = 100
@@ -51,6 +53,12 @@ def upload(request):
             img = PIL.Image.open(fs.open(photo.image.name))
             img.thumbnail((PREVIEW_WIDTH, PREVIEW_HEIGHT))
             img_file = io.BytesIO(img.tobytes())
+
+            # Handle image rotation specified via exif
+            rot, h_flip, v_flip = pil_helper.get_image_rotation(img)
+            print(rot)
+            if rot:
+                img = img.rotate(rot)
 
             buf = io.BytesIO()
             img.save(buf, 'png')

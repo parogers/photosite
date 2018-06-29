@@ -11,6 +11,6 @@ export PHOTOSITE_ALLOWED_HOSTS="$IP"
 export PHOTOSITE_CONTENT_SERVER="$IP"
 
 echo ""
-echo "###BINDING TO IP $IP"
+echo "### BINDING TO IP $IP"
 echo ""
 ./manage.py runserver "${IP}:8000"
