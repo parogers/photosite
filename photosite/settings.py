@@ -29,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -121,12 +120,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = 'http://localhost/content/static/'
+CONTENT_SERVER = os.environ.get('PHOTOSITE_CONTENT_SERVER', 'localhost')
 
+try:
+    addr_list = os.environ['PHOTOSITE_ALLOWED_HOSTS']
+except KeyError:
+    pass
+else:
+    for addr in addr_list.split(':'):
+        ALLOWED_HOSTS.append(addr)
+
+STATIC_URL = 'http://%s/content/static/' % CONTENT_SERVER
 STATIC_ROOT = os.path.join(BASE_DIR, 'content', 'static')
 
-MEDIA_URL = 'http://localhost/content/media/'
+MEDIA_URL = 'http://%s/content/media/' % CONTENT_SERVER
 MEDIA_ROOT = os.path.join(BASE_DIR, 'content', 'media')
 
 LOGIN_URL = '/accounts/login/'
+
+FILE_UPLOAD_PERMISSIONS = 0o744
 
