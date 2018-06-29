@@ -35,7 +35,11 @@
 
 <div class="container">
   {% for photo in photo_list %}
-  <img class="photo img-thumbnail" src='{{ photo.image.url }}'>
+  {% if photo.preview %}
+  <img class="photo img-thumbnail" src='{{ photo.preview.url }}'>
+  {% else %}
+  (missing {{ photo.id }})
+  {% endif %}
   {% endfor %}
 </div>
 {% endblock %}

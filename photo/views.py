@@ -14,12 +14,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import io
+import PIL, PIL.Image
 from django.views.generic import ListView
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
 from photo.models import Photo
 from photo.forms import PhotoForm
+
+PREVIEW_WIDTH = 100
+PREVIEW_HEIGHT = 100
 
 class PhotoList(ListView):
     model = Photo
@@ -37,7 +43,26 @@ def upload(request):
     if request.method == 'POST':
         form = PhotoForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            photo = form.save()
+
+            fs = FileSystemStorage()
+
+            # Generate a preview image and dump it into a bytes buffer
+            img = PIL.Image.open(fs.open(photo.image.name))
+            img.thumbnail((PREVIEW_WIDTH, PREVIEW_HEIGHT))
+            img_file = io.BytesIO(img.tobytes())
+
+            buf = io.BytesIO()
+            img.save(buf, 'png')
+
+            # Save the image buffer to default file storage
+            preview_path = fs.get_available_name(photo.image.name)
+            fs.save(preview_path, buf)
+            photo.preview = preview_path
+            photo.preview_width = img.width
+            photo.preview_height = img.height
+            photo.save()
+            
             return HttpResponseRedirect('/')
 
     else:

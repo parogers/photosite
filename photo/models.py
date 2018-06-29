@@ -23,6 +23,13 @@ class Photo(models.Model):
         upload_to='uploads/%Y/%m/%d/',
         width_field='image_width',
         height_field='image_height')
+    preview = models.ImageField(
+        width_field='preview_width',
+        height_field='preview_height',
+        null=True)
 
     image_width = models.IntegerField()
     image_height = models.IntegerField()
+
+    preview_width = models.IntegerField(default=0)
+    preview_height = models.IntegerField(default=0)
