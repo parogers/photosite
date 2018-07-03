@@ -14,7 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import io
+import PIL, PIL.Image
 from django.db import models
+from django.core.files.storage import FileSystemStorage
+
+from . import pil_helper
+
+PREVIEW_WIDTH = 100
+PREVIEW_HEIGHT = 100
 
 # Create your models here.
 class Photo(models.Model):
@@ -33,3 +41,27 @@ class Photo(models.Model):
 
     preview_width = models.IntegerField(default=0)
     preview_height = models.IntegerField(default=0)
+
+    def generate_and_save_preview(self):
+        fs = FileSystemStorage()
+
+        # Generate a preview image and dump it into a bytes buffer
+        img = PIL.Image.open(fs.open(self.image.name))
+        img.thumbnail((PREVIEW_WIDTH, PREVIEW_HEIGHT))
+        img_file = io.BytesIO(img.tobytes())
+
+        # Handle image rotation specified via exif
+        rot, h_flip, v_flip = pil_helper.get_image_rotation(img)
+        if rot:
+            img = img.rotate(rot)
+
+        buf = io.BytesIO()
+        img.save(buf, 'png')
+
+        # Save the image buffer to default file storage
+        preview_path = fs.get_available_name(self.image.name)
+        fs.save(preview_path, buf)
+        self.preview = preview_path
+        self.preview_width = img.width
+        self.preview_height = img.height
+        self.save()
