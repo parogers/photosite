@@ -22,7 +22,7 @@ from rest_framework.decorators import action
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = ('id', 'image', 'image_width', 'image_height')
+        fields = ('image', 'comment', 'image_width', 'image_height')
         # Fields that are ignored during record updates
         read_only_fields = ('image_width', 'image_height')
 
