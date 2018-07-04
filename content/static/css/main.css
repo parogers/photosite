@@ -1,9 +1,10 @@
 .photo {
-    width: 100px;
-    margin: 10px;
+    width: 100%;
+    margin-bottom: 1em;
 }
 
 .jumbotron {
+    background-color: #0DCEFF;
     text-align: center;
 }
 
@@ -15,20 +16,11 @@
     font-style: italic;
 }
 
-.button {
-    border-radius: 0.75em;
-    padding: 0.5em;
-    background: lightblue;
-    color: black;
-    margin-bottom: 1em;
-    border: none;
-}
-
-.menu {
+.upload-area {
     text-align: center;
 }
 
-#upload-div form {
+.upload-area form {
     display: none;
 }
 
