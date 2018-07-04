@@ -32,7 +32,7 @@ def get_image_rotation(img):
     """Returns the rotation angle (in degrees), horizontal and vertical flip
     of the image according to any embedded tags"""
 
-    rot = 0
+    angle = 0
     h_flip = False
     v_flip = False
     
@@ -40,28 +40,31 @@ def get_image_rotation(img):
     tags = get_exif_tags(img)
     try:
         rot = tags['Orientation']
+        print(tags)
     except KeyError:
         pass
     else:
-        if rot == 2:
+        if rot == 1:
+            rot = 0;
+        elif rot == 2:
             h_flip = True
         elif rot == 3:
-            rot = 180
+            angle = 180
         elif rot == 4:
-            rot = 180
+            angle = 180
             h_flip = True
         elif rot == 5:
-            rot = 90
+            angle = 90
             h_flip = True
         elif rot == 6:
-            rot = 90
+            angle = 90
         elif rot == 7:
-            rot = 270
+            angle = 270
             h_flip = true
         elif rot == 8:
-            rot = 270
+            angle = 270
 
     # TODO - handle tiff image rotation
     # ...
 
-    return (-rot, h_flip, v_flip)
+    return (-angle, h_flip, v_flip)

@@ -19,15 +19,21 @@
 {% endif %} -->
 
 {% if user.is_authenticated %}
-<div class="upload-area">
+<div class="container upload-area">
 
   <p>
-    <button data-toggle="collapse" data-target="#messagebox" class="btn btn-primary btn-lg" onclick="upload_photo()">
-    Upload photo
+    <button data-toggle="collapse" data-target="#messagebox" class="btn btn-action btn-lg" onclick="upload_photo()">
+      Upload photo
     </button>
   </p>
 
-  <form id="upload_form" action="/upload" method="post" enctype="multipart/form-data">
+  <p id="upload-message">Something here</p>
+
+  <noscript>
+    <p class="text-warning">Note: you have Javascript disabled</p>
+  </noscript>
+
+  <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="image" id="image_id" />
     <input type="submit" value="Upload" id="submit_button" />
@@ -39,17 +45,21 @@
 <div class="container">
   {% for photo in photo_list %}
 
-  {% if forloop.counter0|divisibleby:3 %}<div class="row">{% endif %}
+  {% if forloop.counter0|divisibleby:4 %}
+    <div class="row">
+  {% endif %}
 
-    <div class="col-md-4">
+    <div class="col-lg-3 col-md-6 col-sm-6">
       {% if photo.preview %}
-      <img class="photo img-thumbnail" src='{{ photo.preview.url }}'>
+      <a href="{{ photo.image.url }}">
+	<img class="photo img-thumbnail" src='{{ photo.preview.url }}'>
+      </a>
       {% else %}
-      (missing {{ photo.id }})
+      (missing thumbnail {{ photo.id }})
       {% endif %}
     </div>
 
-  {% if forloop.counter|divisibleby:3 %}</div>{% endif %}
+  {% if forloop.counter|divisibleby:4 %}</div>{% endif %}
 
   {% endfor %}
 </div>

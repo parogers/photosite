@@ -29,7 +29,7 @@ class PhotoList(ListView):
 
 def index(request):
     return render(request, 'photo/index.html', {
-        'photo_list' : Photo.objects.all(),
+        'photo_list' : Photo.objects.all().order_by('-date_added'),
         'user' : request.user,
     })
 

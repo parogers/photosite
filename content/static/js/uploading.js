@@ -30,18 +30,19 @@ function upload_photo()
 
 $(document).ready(function() {
 
-    var form = $('#upload_form');
+    var form = $('#upload-form');
     if (form)
     {
 	var input = $('#image_id');
-
 	input.change(function() {
-	    //console.log(input.value);
-	    //form.submit();
+	    var msg = $('#upload-message');
+	    msg.html('Uploading image...');
+	    msg.addClass('shown');
 
-	    form.submit();
+	    setTimeout(function() {
+		form.submit();
+	    }, 1);
 	});
-	
     }
 
 });

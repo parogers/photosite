@@ -4,16 +4,21 @@
 }
 
 .jumbotron {
-    background-color: #0DCEFF;
+    background-color: #E8500C;
     text-align: center;
+    color: #fff;
+    border-bottom: solid 1px;
+    border-bottom-color: black;
 }
 
 .jumbotron h1 {
     font-weight: bold;
+    font-size: 10vh;
 }
 
 .jumbotron p {
     font-style: italic;
+    font-size: larger;
 }
 
 .upload-area {
@@ -24,3 +29,21 @@
     display: none;
 }
 
+.upload-area .text-warning {
+    background: #333;
+}
+
+.hidden {
+}
+
+.shown {
+}
+
+#upload-message, #upload-message.hidden {
+    display: none;
+    margin-bottom: 1em;
+}
+
+#upload-message.shown {
+    display: block;
+}

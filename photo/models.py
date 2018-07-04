@@ -21,8 +21,8 @@ from django.core.files.storage import FileSystemStorage
 
 from . import pil_helper
 
-PREVIEW_WIDTH = 100
-PREVIEW_HEIGHT = 100
+PREVIEW_WIDTH = 300
+PREVIEW_HEIGHT = 300
 
 # Create your models here.
 class Photo(models.Model):
@@ -50,11 +50,11 @@ class Photo(models.Model):
         # Generate a preview image and dump it into a bytes buffer
         img = PIL.Image.open(fs.open(self.image.name))
         img.thumbnail((PREVIEW_WIDTH, PREVIEW_HEIGHT))
-        img_file = io.BytesIO(img.tobytes())
 
         # Handle image rotation specified via exif
         rot, h_flip, v_flip = pil_helper.get_image_rotation(img)
         if rot:
+            print(rot)
             img = img.rotate(rot)
 
         buf = io.BytesIO()
