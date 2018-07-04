@@ -19,10 +19,13 @@
 {% endif %} -->
 
 {% if user.is_authenticated %}
-<div id="upload-div" class="menu">
-  <button data-toggle="collapse" data-target="#messagebox" class="button" onclick="upload_photo()">
+<div class="upload-area">
+
+  <p>
+    <button data-toggle="collapse" data-target="#messagebox" class="btn btn-primary btn-lg" onclick="upload_photo()">
     Upload photo
-  </button>
+    </button>
+  </p>
 
   <form id="upload_form" action="/upload" method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -35,7 +38,15 @@
 
 <div class="container">
   {% for photo in photo_list %}
-  <img class="photo img-thumbnail" src='{{ photo.image.url }}'>
+
+  {% if forloop.counter0|divisibleby:3 %}<div class="row">{% endif %}
+
+    <div class="col-md-4">
+      <img class="photo img-thumbnail" src='{{ photo.image.url }}'>
+    </div>
+
+  {% if forloop.counter|divisibleby:3 %}</div>{% endif %}
+
   {% endfor %}
 </div>
 {% endblock %}
