@@ -30,12 +30,12 @@ function upload_photo()
 
 $(document).ready(function() {
 
-    var form = $('#upload-form');
+    var form = $('#upload_form');
     if (form)
     {
 	var input = $('#image_id');
 	input.change(function() {
-	    var msg = $('#upload-message');
+	    var msg = $('#upload_message');
 	    msg.html('Uploading image...');
 	    msg.addClass('shown');
 

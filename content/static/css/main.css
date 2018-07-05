@@ -39,11 +39,11 @@
 .shown {
 }
 
-#upload-message, #upload-message.hidden {
+#upload_message, #upload_message.hidden {
     display: none;
     margin-bottom: 1em;
 }
 
-#upload-message.shown {
+#upload_message.shown {
     display: block;
 }

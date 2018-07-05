@@ -27,13 +27,13 @@
     </button>
   </p>
 
-  <p id="upload-message">Something here</p>
+  <p id="upload_message">Something here</p>
 
   <noscript>
     <p class="text-warning">Note: you have Javascript disabled</p>
   </noscript>
 
-  <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+  <form id="upload_form" action="/upload" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" name="image" id="image_id" />
     <input type="submit" value="Upload" id="submit_button" />
