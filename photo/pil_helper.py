@@ -19,6 +19,8 @@ import PIL, PIL.Image, PIL.ExifTags, PIL.TiffTags
 def get_exif_tags(img):
     try:
         raw_exif = img._getexif()
+        if not raw_exif:
+            return {}
     except AttributeError:
         return {}
 
