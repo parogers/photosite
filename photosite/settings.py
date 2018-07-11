@@ -137,6 +137,7 @@ MEDIA_URL = 'http://%s/content/media/' % CONTENT_SERVER
 MEDIA_ROOT = os.path.join(BASE_DIR, 'content', 'media')
 
 LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
 
 FILE_UPLOAD_PERMISSIONS = 0o744
 

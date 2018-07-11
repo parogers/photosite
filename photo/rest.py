@@ -14,17 +14,67 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
 from .models import Photo
 from rest_framework import serializers, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-class PhotoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Photo
-        fields = ('image', 'comment', 'image_width', 'image_height')
-        # Fields that are ignored during record updates
-        read_only_fields = ('image_width', 'image_height')
+import re
+from io import BytesIO
+import base64
+
+class Base64ImageField(serializers.ImageField):
+    def to_internal_value(self, data):
+        if isinstance(data, str) and data.startswith('data:image'):
+
+            m = re.match('^data:(.*?/.*?);base64,(.*)', data)
+            if not m:
+                self.fail('invalid', input=data)
+
+            content_type, img_str = m.groups()
+            base_type, img_ext = content_type.split('/')
+            if base_type != 'image':
+                self.fail('not_an_image', input=data)
+
+            if img_ext not in ('jpg', 'png', 'gif'):
+                self.fail('invalid_image_format', input=data)
+
+            # TODO - check for valid image types
+
+            #fmt, img_str = data.split(';base64,')  # format ~= data:image/X,
+            #ext = fmt.split('/')[-1]  # guess file extension
+
+            img_data = BytesIO(base64.b64decode(img_str))
+            
+            data = InMemoryUploadedFile(
+                img_data, 'image', 'photo.' + img_ext,
+                content_type, len(img_data.getbuffer()), 'UTF-8')
+
+        return super(Base64ImageField, self).to_internal_value(data)
+
+
+#class PhotoSerializer(serializers.ModelSerializer):
+#    class Meta:
+#        model = Photo
+#        fields = ('id', 'image', 'comment', 'image_width', 'image_height')
+#        # Fields that are ignored during record updates
+#        read_only_fields = ('id', 'image_width', 'image_height')
+
+class PhotoSerializer(serializers.Serializer):
+    comment = serializers.CharField(max_length=100)
+    image = Base64ImageField()
+
+    def create(self, validated_data):
+        return Photo(**validated_data)
+
+    def update(self, photo, validated_data):
+        print(validated_data)
+        photo.image = validated_data['image']
+        photo.comment = validated_data['comment']
+        photo.save()
+        return photo
 
 # Provides CRUD operations for photo records
 class PhotoViewSet(viewsets.ModelViewSet):
