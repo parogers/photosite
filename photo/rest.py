@@ -28,7 +28,7 @@ import base64
 class Base64ImageField(serializers.ImageField):
     def to_internal_value(self, data):
         if isinstance(data, str) and data.startswith('data:image'):
-
+            # Parse out the content type and encoded bytes
             m = re.match('^data:(.*?/.*?);base64,(.*)', data)
             if not m:
                 self.fail('invalid', input=data)
@@ -41,40 +41,37 @@ class Base64ImageField(serializers.ImageField):
             if img_ext not in ('jpg', 'png', 'gif'):
                 self.fail('invalid_image_format', input=data)
 
-            # TODO - check for valid image types
-
-            #fmt, img_str = data.split(';base64,')  # format ~= data:image/X,
-            #ext = fmt.split('/')[-1]  # guess file extension
-
+            # Wrap the decoded bytes into a uploaded file object
             img_data = BytesIO(base64.b64decode(img_str))
-            
             data = InMemoryUploadedFile(
                 img_data, 'image', 'photo.' + img_ext,
                 content_type, len(img_data.getbuffer()), 'UTF-8')
 
         return super(Base64ImageField, self).to_internal_value(data)
 
+#class PhotoSerializer(serializers.Serializer):
+#    comment = serializers.CharField(max_length=100)
+#    image = Base64ImageField()
+#    image_width = serializers.IntegerField()
+#    image_height = serializers.IntegerField()
+#
+#    def create(self, validated_data):
+#        return Photo(**validated_data)
+#
+#    def update(self, photo, validated_data):
+#        photo.image = validated_data['image']
+#        photo.comment = validated_data['comment']
+#        photo.save()
+#        return photo
 
-#class PhotoSerializer(serializers.ModelSerializer):
-#    class Meta:
-#        model = Photo
-#        fields = ('id', 'image', 'comment', 'image_width', 'image_height')
-#        # Fields that are ignored during record updates
-#        read_only_fields = ('id', 'image_width', 'image_height')
-
-class PhotoSerializer(serializers.Serializer):
-    comment = serializers.CharField(max_length=100)
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photo
+        fields = ('id', 'image', 'comment', 'image_width', 'image_height')
+        # Fields that are ignored during record updates
+        read_only_fields = ('id', 'image_width', 'image_height')
+    
     image = Base64ImageField()
-
-    def create(self, validated_data):
-        return Photo(**validated_data)
-
-    def update(self, photo, validated_data):
-        print(validated_data)
-        photo.image = validated_data['image']
-        photo.comment = validated_data['comment']
-        photo.save()
-        return photo
 
 # Provides CRUD operations for photo records
 class PhotoViewSet(viewsets.ModelViewSet):
