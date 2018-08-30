@@ -13,16 +13,17 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_PATH = os.path.join(os.getenv('HOME'), '.photosite-secret-key')
-with open(SECRET_PATH) as file:
-    SECRET_KEY = file.read().strip()
+#SECRET_PATH = os.path.join(os.getenv('HOME'), '.photosite-secret-key')
+#with open(SECRET_PATH) as file:
+#    SECRET_KEY = file.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -73,15 +74,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'photosite.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+DATABASES = {}
 
 
 # Password validation
@@ -130,11 +123,11 @@ else:
     for addr in addr_list.split(':'):
         ALLOWED_HOSTS.append(addr)
 
-STATIC_URL = 'http://%s/content/static/' % CONTENT_SERVER
-STATIC_ROOT = os.path.join(BASE_DIR, 'content', 'static')
+#STATIC_URL = 'http://%s/content/static/' % CONTENT_SERVER
+#STATIC_ROOT = os.path.join(BASE_DIR, 'content', 'static')
 
-MEDIA_URL = 'http://%s/content/media/' % CONTENT_SERVER
-MEDIA_ROOT = os.path.join(BASE_DIR, 'content', 'media')
+#MEDIA_URL = 'http://%s/content/media/' % CONTENT_SERVER
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'content', 'media')
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
