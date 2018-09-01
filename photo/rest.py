@@ -26,6 +26,12 @@ from io import BytesIO
 import base64
 
 class Base64ImageField(serializers.ImageField):
+    """Override the default ImageField implementation to allow for images
+    submitted in base64 encoded format. (eg. data:image;base64,....)"""
+
+    # In the serializer field class, to_internal_value converts user or form
+    # submitted data into the relevant object representation.
+    # (eg. date as a string => python datetime object)
     def to_internal_value(self, data):
         if isinstance(data, str) and data.startswith('data:image'):
             # Parse out the content type and encoded bytes
@@ -47,7 +53,7 @@ class Base64ImageField(serializers.ImageField):
                 img_data, 'image', 'photo.' + img_ext,
                 content_type, len(img_data.getbuffer()), 'UTF-8')
 
-        return super(Base64ImageField, self).to_internal_value(data)
+        return super().to_internal_value(data)
 
 #class PhotoSerializer(serializers.Serializer):
 #    comment = serializers.CharField(max_length=100)
