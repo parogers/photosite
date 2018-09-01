@@ -37,6 +37,8 @@ MEDIA_URL = '/media/'
 
 assert os.path.exists(STATIC_ROOT), 'Static directory doesn\'t exist: ' + STATIC_ROOT
 
+#MIDDLEWARE.append('photosite.middleware.DebugMiddleware')
+
 try:
     from .local import *
 except ImportError:
