@@ -17,9 +17,11 @@
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from .models import Photo
-from rest_framework import serializers, viewsets, permissions
+from rest_framework import serializers, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.authentication import TokenAuthentication
 
 import re
 from io import BytesIO
@@ -84,7 +86,10 @@ class PhotoViewSet(viewsets.ModelViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    # Authentication classes can be specified here, otherwise DRF will
+    # use the defaults supplied under settings.REST_FRAMEWORK
+    #authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     # detail=False => this action can be called without referring to a photo
     # object (eg GET /api/photo/something)

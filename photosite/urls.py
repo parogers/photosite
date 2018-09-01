@@ -20,6 +20,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
 
+from rest_framework.authtoken.views import obtain_auth_token
+
 def testing(request):
     return HttpResponse('Hello world', content_type='text/plain')
 
@@ -30,7 +32,8 @@ urlpatterns = [
     path('testing', testing),
 
     path('accounts/', include('django.contrib.auth.urls')),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-token-auth/', obtain_auth_token),
 ]
 
 if settings.DEBUG:

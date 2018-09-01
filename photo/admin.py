@@ -15,9 +15,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.contrib import admin
+from rest_framework.authtoken.admin import TokenAdmin
+
 from . import models
 
 class PhotoAdmin(admin.ModelAdmin):
     list_display = ('pk', 'image')
 
 admin.site.register(models.Photo, PhotoAdmin)
+
+# Display the DRF token in the admin panel
+TokenAdmin.fields += ('key',)
