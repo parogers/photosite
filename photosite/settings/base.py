@@ -16,14 +16,8 @@ import os
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_PATH = os.path.join(os.getenv('HOME'), '.photosite-secret-key')
-#with open(SECRET_PATH) as file:
-#    SECRET_KEY = file.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -109,26 +103,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
-
-CONTENT_SERVER = os.environ.get('PHOTOSITE_CONTENT_SERVER', 'localhost')
-
-try:
-    addr_list = os.environ['PHOTOSITE_ALLOWED_HOSTS']
-except KeyError:
-    pass
-else:
-    for addr in addr_list.split(':'):
-        ALLOWED_HOSTS.append(addr)
-
-#STATIC_URL = 'http://%s/content/static/' % CONTENT_SERVER
-#STATIC_ROOT = os.path.join(BASE_DIR, 'content', 'static')
-
-#MEDIA_URL = 'http://%s/content/media/' % CONTENT_SERVER
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'content', 'media')
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'

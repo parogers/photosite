@@ -24,7 +24,6 @@ from . import pil_helper
 PREVIEW_WIDTH = 300
 PREVIEW_HEIGHT = 300
 
-# Create your models here.
 class Photo(models.Model):
     date_added = models.DateTimeField(auto_now_add=True, null=False)
     image = models.ImageField(
@@ -54,7 +53,6 @@ class Photo(models.Model):
         # Handle image rotation specified via exif
         rot, h_flip, v_flip = pil_helper.get_image_rotation(img)
         if rot:
-            print(rot)
             img = img.rotate(rot)
 
         buf = io.BytesIO()
