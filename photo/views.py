@@ -50,3 +50,5 @@ def upload(request):
         'form' : form,
     })
 
+def testing(request):
+    return HttpResponse('Hello world', content_type='text/plain')

@@ -22,23 +22,23 @@ from django.http import HttpResponse
 from rest_framework import routers
 
 from rest_framework.authtoken.views import obtain_auth_token
-from photo.rest import PhotoViewSet
+from photo.rest import PhotoViewSet, TestViewSet
+from easyauth.rest import BeginRegistrationViewSet, CompleteRegistrationViewSet
+import easyauth.rest
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register('photo', PhotoViewSet)
-
-def testing(request):
-    return HttpResponse('Hello world', content_type='text/plain')
+router.register('app-auth', BeginRegistrationViewSet, base_name='app-auth')
+router.register('app-auth', CompleteRegistrationViewSet, base_name='app-auth')
+router.register('test', TestViewSet, base_name='test')
 
 urlpatterns = [
     path('', include('photo.urls')),
     path('admin/', admin.site.urls),
-
-    path('testing', testing),
-
     path('accounts/', include('django.contrib.auth.urls')),
 
+    # REST framework urls:
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api-token-auth/', obtain_auth_token),

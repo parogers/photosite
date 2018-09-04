@@ -14,18 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.urls import path, include
-from django.contrib.auth import views as auth_views
+from django.contrib import admin
+from rest_framework.authtoken.admin import TokenAdmin
 
-from . import views
-from photo.models import Photo
+from . import models
 
-urlpatterns = [
-    path('', views.index, name='index'),
-    path('photos', views.PhotoList.as_view()),
-    path('upload', views.upload, name='upload'),
-    path('testing', views.testing),
-
-    #path('login', auth_views.LoginView.as_view()),
-    #path('<int:test_id>', views.detail, name='detail'),
-]
+@admin.register(models.AppAuthRequest)
+class AppAuthRequestAdmin(admin.ModelAdmin):
+    list_display = ('user', 'app_side_token', 'user_side_code')

@@ -96,3 +96,20 @@ class PhotoViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def something(self, request):
         return Response('hello world')
+
+class TestViewSet(viewsets.ViewSet):
+    def list(self, request):
+        return Response(list(range(10)))
+
+    def retrieve(self, request, pk=None):
+        return Response(int(pk))
+
+    def update(self, request, pk=None):
+        return Response('updated')
+
+    def create(self, request):
+        print('Create with', request.data)
+        return Response('created')
+
+    def destroy(self, request, pk=None):
+        return Response('deleted')
