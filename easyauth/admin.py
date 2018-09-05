@@ -21,4 +21,9 @@ from . import models
 
 @admin.register(models.AppAuthRequest)
 class AppAuthRequestAdmin(admin.ModelAdmin):
-    list_display = ('user', 'app_side_token', 'user_side_code')
+    list_display = (
+        'user',
+        'expiry_date',
+        'app_side_token',
+        'user_side_token',
+        'user_side_code')

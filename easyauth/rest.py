@@ -66,7 +66,7 @@ import string
 
 from django.shortcuts import resolve_url
 from django.contrib.auth.models import User
-from django.utils import crypto
+from django.utils import crypto, timezone
 from django.urls import reverse
 from rest_framework import serializers
 from rest_framework.views import APIView
@@ -75,6 +75,9 @@ from rest_framework.decorators import action
 from rest_framework.authtoken.models import Token
 
 from .models import AppAuthRequest, APP_TOKEN_LENGTH, USER_CODE_LENGTH
+
+# How long until the login request expires (in seconds)
+LOGIN_EXPIRY_TIME = 10*60
 
 # The client app registration end point is split into two API classes,
 # so that we can use two different serializers. To begin the registration
@@ -126,13 +129,16 @@ class BeginRegistrationView(APIView):
 
             print('***')
             print('*** Emailing link: %s' % link)
+            print('*** (link expires in %d minutes)' % (LOGIN_EXPIRY_TIME//60))
             print('***')
 
+            expiry = timezone.now() + timezone.timedelta(0, LOGIN_EXPIRY_TIME)
             request_obj = AppAuthRequest.objects.create(
                 user=user,
                 app_side_token=app_token,
                 user_side_token=user_token,
-                user_side_code=user_code)
+                user_side_code=user_code,
+                expiry_date=expiry)
 
         return Response({'registration-token' : app_token})
 
@@ -146,10 +152,16 @@ class ObtainAccessCodeView(APIView):
     #    url_path='obtain-access-code/(?P<token>[a-zA-Z0-9]*)')
 
     def get(self, request, token=None):
+        # TODO - handle this periodically in a background task
+        AppAuthRequest.delete_expired_requests()
+
         try:
             request_obj = AppAuthRequest.objects.get(user_side_token=token)
         except AppAuthRequest.DoesNotExist:
             return Response({'detail' : 'bad credentials'}, status=400)
+
+        if timezone.now() > request_obj.expiry_date:
+            return Response({'detail' : 'credentials expired'}, status=400)
 
         return Response({'access_code' : request_obj.user_side_code})
 
@@ -172,12 +184,18 @@ class CompleteRegistrationView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)
 
+        # TODO - handle this periodically in a background task
+        AppAuthRequest.delete_expired_requests()
+
         try:
             request_obj = AppAuthRequest.objects.get(
                 app_side_token=serializer.validated_data['registration_token'],
                 user_side_code=serializer.validated_data['access_code'])
         except AppAuthRequest.DoesNotExist:
             return Response({'detail' : 'bad credentials'}, status=400)
+
+        if timezone.now() > request_obj.expiry_date:
+            return Response({'detail' : 'credentials expired'}, status=400)
 
         request_obj.delete()
 
