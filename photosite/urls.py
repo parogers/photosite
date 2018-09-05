@@ -23,14 +23,11 @@ from rest_framework import routers
 
 from rest_framework.authtoken.views import obtain_auth_token
 from photo.rest import PhotoViewSet, TestViewSet
-from easyauth.rest import BeginRegistrationViewSet, CompleteRegistrationViewSet
 import easyauth.rest
 
-# Routers provide an easy way of automatically determining the URL conf.
+# Note: routers only work with viewset objects
 router = routers.DefaultRouter()
 router.register('photo', PhotoViewSet)
-router.register('app-auth', BeginRegistrationViewSet, base_name='app-auth')
-router.register('app-auth', CompleteRegistrationViewSet, base_name='app-auth')
 router.register('test', TestViewSet, base_name='test')
 
 urlpatterns = [
@@ -38,10 +35,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
 
+    # TODO - merge this into router somehow?
+    path('app-auth/', include('easyauth.urls')),
+    
     # REST framework urls:
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api-token-auth/', obtain_auth_token),
+    # Exchange a username+password for an authtoken
+    #path('api-token-auth/', obtain_auth_token),
 ]
 
 if settings.DEBUG:

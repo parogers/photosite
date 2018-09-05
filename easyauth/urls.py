@@ -15,3 +15,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.urls import path, include
+
+from . import rest
+
+app_name = 'easyauth'
+urlpatterns = [
+    path('begin', rest.begin_registration, name='begin'),
+    path('complete', rest.complete_registration, name='complete'),
+    path('obtain-access-code/',
+         rest.obtain_access_code,
+         name='obtain_access_code'),
+    path('obtain-access-code/<str:token>',
+         rest.obtain_access_code,
+         name='obtain_access_code'),
+]

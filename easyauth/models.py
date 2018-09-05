@@ -10,6 +10,7 @@ class AppAuthRequest(models.Model):
     subsequent interactions."""
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     app_side_token = models.CharField(max_length=APP_TOKEN_LENGTH)
+    user_side_token = models.CharField(max_length=APP_TOKEN_LENGTH, default='')
     user_side_code = models.CharField(max_length=USER_CODE_LENGTH)
 
     # TODO - add expiry time
