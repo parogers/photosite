@@ -14,19 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from django.urls import path, include
+from django.dispatch import receiver
+from django.urls import reverse
+from corsheaders.signals import check_request_enabled
 
-from . import rest
-
-app_name = 'easyauth'
-urlpatterns = [
-    path('', rest.index, name='index'),
-    path('begin', rest.begin_registration, name='begin'),
-    path('complete', rest.complete_registration, name='complete'),
-    path('obtain-access-code/',
-         rest.obtain_access_code,
-         name='obtain_access_code'),
-    path('obtain-access-code/<str:token>',
-         rest.obtain_access_code,
-         name='obtain_access_code'),
-]
+@receiver(check_request_enabled)
+def allow_api_requests(sender, request, **kwargs):
+    # Make sure everything under the API root is accessible from every
+    # origin. In the corsheader middleware this actually adds the HTTP client
+    # "Origin" value into the "Access-Control-Allow-Origin" response header.
+    return request.path.startswith(reverse('api-root'))

@@ -64,7 +64,6 @@ This flow requires the end points:
 
 import string
 
-from django.shortcuts import resolve_url
 from django.contrib.auth.models import User
 from django.utils import crypto, timezone
 from django.urls import reverse
@@ -78,6 +77,10 @@ from .models import AppAuthRequest, APP_TOKEN_LENGTH, USER_CODE_LENGTH
 
 # How long until the login request expires (in seconds)
 LOGIN_EXPIRY_TIME = 10*60
+
+class IndexView(APIView):
+    def get(self, request):
+        return Response({})
 
 # The client app registration end point is split into two API classes,
 # so that we can use two different serializers. To begin the registration
@@ -203,6 +206,7 @@ class CompleteRegistrationView(APIView):
         token, created = Token.objects.get_or_create(user=request_obj.user)
         return Response({'token' : token.key})
 
+index = IndexView.as_view()
 begin_registration = BeginRegistrationView.as_view()
 obtain_access_code = ObtainAccessCodeView.as_view()
 complete_registration = CompleteRegistrationView.as_view()

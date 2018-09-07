@@ -35,11 +35,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
 
-    # TODO - merge this into router somehow?
-    path('app-auth/', include('easyauth.urls')),
-    
     # REST framework urls:
-    path('api/', include(router.urls)),
+    path('api/', include(router.urls), name='api-root'),
+    # TODO - merge this into router somehow?
+    path('api/app-auth/', include('easyauth.urls')),
+    
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # Exchange a username+password for an authtoken
     #path('api-token-auth/', obtain_auth_token),
@@ -47,3 +47,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+from . import signals
