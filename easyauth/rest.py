@@ -143,7 +143,7 @@ class BeginRegistrationView(APIView):
                 user_side_code=user_code,
                 expiry_date=expiry)
 
-        return Response({'registration-token' : app_token})
+        return Response({'registration_token' : app_token})
 
 class ObtainAccessCodeView(APIView):
     def get_view_name(self):
@@ -204,7 +204,7 @@ class CompleteRegistrationView(APIView):
 
         # Generate a DRF auth token the client can use from now and on
         token, created = Token.objects.get_or_create(user=request_obj.user)
-        return Response({'token' : token.key})
+        return Response({'authentication_token' : token.key})
 
 index = IndexView.as_view()
 begin_registration = BeginRegistrationView.as_view()
